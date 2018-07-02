@@ -16,7 +16,7 @@
   <version>1.0.0</version>
 </dependency>
 </textarea>
-<h3>Api:<a href="swagger/" target="_blank">dr-api</a></h3>
+<h3>Api:<a href="swagger-ui.html" target="_blank">ps-api</a></h3>
 <h3>监控:<a href="druid/index.html" target="_blank">druid</a></h3>
 </body>
 </html>

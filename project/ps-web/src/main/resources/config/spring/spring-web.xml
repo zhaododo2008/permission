@@ -22,6 +22,9 @@
 
     <context:component-scan base-package="com.codeshare.permission"/>
 
+    <mvc:resources location="classpath:/META-INF/resources/" mapping="swagger-ui.html"/>
+    <mvc:resources location="classpath:/META-INF/resources/webjars/" mapping="/webjars/**"/>
+
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="defaultEncoding" value="UTF-8"></property>
         <property name="maxUploadSize" value="@{file.maxsize}"></property>

@@ -7,6 +7,9 @@
     <artifactId>ps-intf</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0</version>
+    <dependencies>
+
+    </dependencies>
     <parent>
         <groupId>com.codeshare.permission</groupId>
         <artifactId>ps-pom</artifactId>
