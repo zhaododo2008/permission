@@ -3,16 +3,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>dr-web</title>
 </head>
 <body>
-<h1>dr-web start success !</h1>
+<h1>ps-web start success !</h1>
 <h3>jar:</h3>
 <textarea rows="6" cols="40">
 <dependency>
-  <groupId>com.ihomefnt.dr</groupId>
-  <artifactId>dr-intf</artifactId>
+  <groupId>com.codeshare.permission</groupId>
+  <artifactId>ps-intf</artifactId>
   <version>1.0.0</version>
 </dependency>
 </textarea>

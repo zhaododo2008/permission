@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%traceId -%msg%n </pattern>
+		</layout>
+	</appender>
+
+	<appender name="baseAppender"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>/opt/codeshare/logs/tomcat/app/${tomcat_app_base}/ps-web-log.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				/opt/codeshare/logs/tomcat/app/${tomcat_app_base}/archive/ps-web-log.%d{yyyy-MM-dd}.log
+			</FileNamePattern>
+		</rollingPolicy>
+		<layout>
+			<Pattern>%-20(%d{HH:mm:ss.SSS} [%thread]) %-5level %logger{32} -%traceId -%msg%n</Pattern>
+		</layout>
+	</appender>
+
+	<appender name="profileAppender"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>/opt/codeshare/logs/tomcat/app/${tomcat_app_base}/profile-log.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				/opt/codeshare/logs/tomcat/app/${tomcat_app_base}/archive/profile-log.%d{yyyy-MM-dd}.log
+			</FileNamePattern>
+		</rollingPolicy>
+		<layout>
+			<Pattern>%-20(%d{HH:mm:ss.SSS} [%thread]) %-5level %logger{32} -%traceId -%msg%n</Pattern>
+		</layout>
+	</appender>
+
+	<appender name="errorAppender"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>/opt/codeshare/logs/tomcat/app/${tomcat_app_base}/error.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				/opt/codeshare/logs/tomcat/app/${tomcat_app_base}/archive/error.%d{yyyy-MM-dd}.log
+			</FileNamePattern>
+		</rollingPolicy>
+		<layout>
+			<Pattern>%-20(%d{HH:mm:ss.SSS} [%thread]) %-5level %logger{32} -%traceId -%msg%n</Pattern>
+		</layout>
+		<!-- 只打印错误日志 -->
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+
+	<!--耗时日志-->
+	<logger name="profile" level="INFO" additivity="false">
+		<appender-ref ref="profileAppender"/>
+	</logger>
+
+	<!--应用日志-->
+	<logger name="com.codeshare" level="DEBUG" additivity="true">
+		<appender-ref ref="baseAppender" />
+	</logger>
+
+	<root level="DEBUG">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="errorAppender" />
+	</root>
+</configuration>
