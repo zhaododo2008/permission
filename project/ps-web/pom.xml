@@ -24,6 +24,10 @@
             <artifactId>ps-service</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.codeshare.common</groupId>
+            <artifactId>ps-common</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

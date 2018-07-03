@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
 
+	<!--traceId converter-->
+	<conversionRule conversionWord="traceId"
+					converterClass="com.codeshare.common.TraceConverter"/>
+
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<layout class="ch.qos.logback.classic.PatternLayout">
 			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%traceId -%msg%n </pattern>

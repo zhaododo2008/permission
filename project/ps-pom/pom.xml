@@ -26,6 +26,11 @@
                 <version>${project_version}</version>
             </dependency>
             <dependency>
+                <groupId>com.codeshare.common</groupId>
+                <artifactId>ps-common</artifactId>
+                <version>${project_version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.mangofactory</groupId>
                 <artifactId>swagger-springmvc</artifactId>
                 <version>1.0.0</version>
@@ -179,6 +184,41 @@
         </dependency>
 
         <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>0.7.5</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.47</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>22.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.zipkin.brave</groupId>
+            <artifactId>brave</artifactId>
+            <version>4.0.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.zipkin.brave</groupId>
+            <artifactId>brave-core</artifactId>
+            <version>4.0.6</version>
+        </dependency>
+
+        <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
             <version>2.4.0</version>
@@ -193,6 +233,7 @@
         <module>../ps-intf</module>
         <module>../ps-service</module>
         <module>../ps-web</module>
+        <module>../ps-common</module>
     </modules>
 
 </project>
