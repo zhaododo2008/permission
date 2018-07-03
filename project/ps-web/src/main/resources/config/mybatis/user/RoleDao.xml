@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codeshare.permission.user.dao.RoleDao">
+  <resultMap id="BaseResultMap" type="com.codeshare.permission.user.po.Role">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="resource_ids" jdbcType="VARCHAR" property="resourceIds" />
+    <result column="available" jdbcType="BIT" property="available" />
+    <result column="del_flag" jdbcType="SMALLINT" property="delFlag" />
+    <result column="add_user_id" jdbcType="INTEGER" property="addUserId" />
+    <result column="upd_user_id" jdbcType="INTEGER" property="updUserId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, description, resource_ids, available, del_flag, add_user_id, upd_user_id, 
+    create_time, update_time
+  </sql>
+   <sql id="WherePrimaryKeysSql">
+       where id in
+       <foreach collection="set" item="item" open="(" close=")" separator=",">
+           #{item}
+       </foreach>
+   </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_role
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_role
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.codeshare.permission.user.po.Role">
+    insert into t_role (id, name, description, 
+      resource_ids, available, del_flag, 
+      add_user_id, upd_user_id, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{resourceIds,jdbcType=VARCHAR}, #{available,jdbcType=BIT}, #{delFlag,jdbcType=SMALLINT}, 
+      #{addUserId,jdbcType=INTEGER}, #{updUserId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.codeshare.permission.user.po.Role">
+    insert into t_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="resourceIds != null">
+        resource_ids,
+      </if>
+      <if test="available != null">
+        available,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="addUserId != null">
+        add_user_id,
+      </if>
+      <if test="updUserId != null">
+        upd_user_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceIds != null">
+        #{resourceIds,jdbcType=VARCHAR},
+      </if>
+      <if test="available != null">
+        #{available,jdbcType=BIT},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=SMALLINT},
+      </if>
+      <if test="addUserId != null">
+        #{addUserId,jdbcType=INTEGER},
+      </if>
+      <if test="updUserId != null">
+        #{updUserId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.codeshare.permission.user.po.Role">
+    update t_role
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceIds != null">
+        resource_ids = #{resourceIds,jdbcType=VARCHAR},
+      </if>
+      <if test="available != null">
+        available = #{available,jdbcType=BIT},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=SMALLINT},
+      </if>
+      <if test="addUserId != null">
+        add_user_id = #{addUserId,jdbcType=INTEGER},
+      </if>
+      <if test="updUserId != null">
+        upd_user_id = #{updUserId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.codeshare.permission.user.po.Role">
+    update t_role
+    set name = #{name,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      resource_ids = #{resourceIds,jdbcType=VARCHAR},
+      available = #{available,jdbcType=BIT},
+      del_flag = #{delFlag,jdbcType=SMALLINT},
+      add_user_id = #{addUserId,jdbcType=INTEGER},
+      upd_user_id = #{updUserId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectList" resultMap="BaseResultMap" parameterType="com.codeshare.permission.user.dto.RoleQueryReq">
+    select
+    <include refid="Base_Column_List" />
+    from t_role
+    <where>
+      <if test="name != null">
+        and name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="description != null">
+        and description = #{description,jdbcType=VARCHAR}
+      </if>
+      <if test="resourceIds != null">
+        and resource_ids = #{resourceIds,jdbcType=VARCHAR}
+      </if>
+      <if test="available != null">
+        and available = #{available,jdbcType=BIT}
+      </if>
+      <if test="delFlag != null">
+        and del_flag = #{delFlag,jdbcType=SMALLINT}
+      </if>
+      <if test="addUserId != null">
+        and add_user_id = #{addUserId,jdbcType=INTEGER}
+      </if>
+      <if test="updUserId != null">
+        and upd_user_id = #{updUserId,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null">
+        and update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+    <if test="orderBy != null">
+      order by ${orderBy}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectOne" resultMap="BaseResultMap" parameterType="com.codeshare.permission.user.dto.RoleQueryReq">
+    select
+    <include refid="Base_Column_List" />
+    from t_role
+    <where>
+      <if test="name != null">
+        and name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="description != null">
+        and description = #{description,jdbcType=VARCHAR}
+      </if>
+      <if test="resourceIds != null">
+        and resource_ids = #{resourceIds,jdbcType=VARCHAR}
+      </if>
+      <if test="available != null">
+        and available = #{available,jdbcType=BIT}
+      </if>
+      <if test="delFlag != null">
+        and del_flag = #{delFlag,jdbcType=SMALLINT}
+      </if>
+      <if test="addUserId != null">
+        and add_user_id = #{addUserId,jdbcType=INTEGER}
+      </if>
+      <if test="updUserId != null">
+        and upd_user_id = #{updUserId,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null">
+        and update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+    limit 0, 1
+  </select>
+    <select id="countList" resultType="java.lang.Long" parameterType="com.codeshare.permission.user.dto.RoleQueryReq">
+      select
+      count(*)
+      from t_role
+      <where>
+        <if test="name != null">
+          and name = #{name,jdbcType=VARCHAR}
+        </if>
+        <if test="description != null">
+          and description = #{description,jdbcType=VARCHAR}
+        </if>
+        <if test="resourceIds != null">
+          and resource_ids = #{resourceIds,jdbcType=VARCHAR}
+        </if>
+        <if test="available != null">
+          and available = #{available,jdbcType=BIT}
+        </if>
+        <if test="delFlag != null">
+          and del_flag = #{delFlag,jdbcType=SMALLINT}
+        </if>
+        <if test="addUserId != null">
+          and add_user_id = #{addUserId,jdbcType=INTEGER}
+        </if>
+        <if test="updUserId != null">
+          and upd_user_id = #{updUserId,jdbcType=INTEGER}
+        </if>
+        <if test="createTime != null">
+          and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateTime != null">
+          and update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+      </where>
+    </select>
+    <select id="selectByPrimaryKeys" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_role
+        <include refid="WherePrimaryKeysSql"/>
+    </select>
+</mapper>

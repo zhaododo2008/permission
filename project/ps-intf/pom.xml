@@ -8,6 +8,10 @@
     <packaging>jar</packaging>
     <version>1.0.0</version>
     <dependencies>
+        <dependency>
+            <groupId>com.codeshare.common</groupId>
+            <artifactId>ps-common</artifactId>
+        </dependency>
 
     </dependencies>
     <parent>

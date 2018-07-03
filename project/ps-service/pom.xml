@@ -17,6 +17,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.codeshare.common</groupId>
+            <artifactId>ps-common</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.codeshare.permission</groupId>
             <artifactId>ps-intf</artifactId>
         </dependency>
@@ -81,20 +85,9 @@
             <artifactId>logback-access</artifactId>
             <version>1.2.3</version>
         </dependency>
+        <dependency>
+            <groupId>com.codeshare.common</groupId>
+            <artifactId>ps-common</artifactId>
+        </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
-
 </project>

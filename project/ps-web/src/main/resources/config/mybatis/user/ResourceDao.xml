@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codeshare.permission.user.dao.ResourceDao">
+  <resultMap id="BaseResultMap" type="com.codeshare.permission.user.po.Resource">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
+    <result column="file_path" jdbcType="VARCHAR" property="filePath" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="parent_ids" jdbcType="VARCHAR" property="parentIds" />
+    <result column="permission" jdbcType="VARCHAR" property="permission" />
+    <result column="available" jdbcType="BIT" property="available" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="priority" jdbcType="INTEGER" property="priority" />
+    <result column="leaf" jdbcType="BIT" property="leaf" />
+    <result column="del_flag" jdbcType="SMALLINT" property="delFlag" />
+    <result column="add_user_id" jdbcType="INTEGER" property="addUserId" />
+    <result column="upd_user_id" jdbcType="INTEGER" property="updUserId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, type, path, file_path, parent_id, parent_ids, permission, available, icon,
+    priority, leaf, del_flag, add_user_id, upd_user_id, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_resource
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_resource
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.codeshare.permission.user.po.Resource">
+    insert into t_resource (id, name, type,
+    path, file_path, parent_id,
+    parent_ids, permission, available,
+    icon, priority, leaf, del_flag,
+    add_user_id, upd_user_id, create_time,
+    update_time)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
+    #{path,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER},
+    #{parentIds,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR}, #{available,jdbcType=BIT},
+    #{icon,jdbcType=VARCHAR}, #{priority,jdbcType=INTEGER}, #{leaf,jdbcType=BIT}, #{delFlag,jdbcType=SMALLINT},
+    #{addUserId,jdbcType=INTEGER}, #{updUserId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+    #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.codeshare.permission.user.po.Resource">
+    insert into t_resource
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="path != null">
+        path,
+      </if>
+      <if test="filePath != null">
+        file_path,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="parentIds != null">
+        parent_ids,
+      </if>
+      <if test="permission != null">
+        permission,
+      </if>
+      <if test="available != null">
+        available,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+      <if test="priority != null">
+        priority,
+      </if>
+      <if test="leaf != null">
+        leaf,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="addUserId != null">
+        add_user_id,
+      </if>
+      <if test="updUserId != null">
+        upd_user_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null">
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null">
+        #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="parentIds != null">
+        #{parentIds,jdbcType=VARCHAR},
+      </if>
+      <if test="permission != null">
+        #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="available != null">
+        #{available,jdbcType=BIT},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null">
+        #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="leaf != null">
+        #{leaf,jdbcType=BIT},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=SMALLINT},
+      </if>
+      <if test="addUserId != null">
+        #{addUserId,jdbcType=INTEGER},
+      </if>
+      <if test="updUserId != null">
+        #{updUserId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.codeshare.permission.user.po.Resource">
+    update t_resource
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null">
+        path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null">
+        file_path = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="parentIds != null">
+        parent_ids = #{parentIds,jdbcType=VARCHAR},
+      </if>
+      <if test="permission != null">
+        permission = #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="available != null">
+        available = #{available,jdbcType=BIT},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null">
+        priority = #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="leaf != null">
+        leaf = #{leaf,jdbcType=BIT},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=SMALLINT},
+      </if>
+      <if test="addUserId != null">
+        add_user_id = #{addUserId,jdbcType=INTEGER},
+      </if>
+      <if test="updUserId != null">
+        upd_user_id = #{updUserId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.codeshare.permission.user.po.Resource">
+    update t_resource
+    set name = #{name,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      path = #{path,jdbcType=VARCHAR},
+      file_path = #{filePath,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      parent_ids = #{parentIds,jdbcType=VARCHAR},
+      permission = #{permission,jdbcType=VARCHAR},
+      available = #{available,jdbcType=BIT},
+      icon = #{icon,jdbcType=VARCHAR},
+      priority = #{priority,jdbcType=INTEGER},
+      leaf = #{leaf,jdbcType=BIT},
+      del_flag = #{delFlag,jdbcType=SMALLINT},
+      add_user_id = #{addUserId,jdbcType=INTEGER},
+      upd_user_id = #{updUserId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_resource
+    <where>
+      <if test="name != null">
+        and name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="type != null">
+        and type = #{type,jdbcType=VARCHAR}
+      </if>
+      <if test="path != null">
+        and path = #{path,jdbcType=VARCHAR}
+      </if>
+      <if test="filePath != null">
+        and file_path = #{filePath,jdbcType=VARCHAR}
+      </if>
+      <if test="parentId != null">
+        and parent_id = #{parentId,jdbcType=INTEGER}
+      </if>
+      <if test="parentIds != null">
+        and parent_ids = #{parentIds,jdbcType=VARCHAR}
+      </if>
+      <if test="permission != null">
+        and permission = #{permission,jdbcType=VARCHAR}
+      </if>
+      <if test="available != null">
+        and available = #{available,jdbcType=BIT}
+      </if>
+      <if test="icon != null">
+        and icon = #{icon,jdbcType=VARCHAR}
+      </if>
+      <if test="priority != null">
+        and priority = #{priority,jdbcType=INTEGER}
+      </if>
+      <if test="leaf != null">
+        and leaf = #{leaf,jdbcType=BIT}
+      </if>
+      <if test="delFlag != null">
+        and del_flag = #{delFlag,jdbcType=SMALLINT}
+      </if>
+      <if test="addUserId != null">
+        and add_user_id = #{addUserId,jdbcType=INTEGER}
+      </if>
+      <if test="updUserId != null">
+        and upd_user_id = #{updUserId,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null">
+        and update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+    <if test="orderBy != null">
+      order by ${orderBy}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectOne" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_resource
+    <where>
+      <if test="name != null">
+        and name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="type != null">
+        and type = #{type,jdbcType=VARCHAR}
+      </if>
+      <if test="path != null">
+        and path = #{path,jdbcType=VARCHAR}
+      </if>
+      <if test="filePath != null">
+        and file_path = #{filePath,jdbcType=VARCHAR}
+      </if>
+      <if test="parentId != null">
+        and parent_id = #{parentId,jdbcType=INTEGER}
+      </if>
+      <if test="parentIds != null">
+        and parent_ids = #{parentIds,jdbcType=VARCHAR}
+      </if>
+      <if test="permission != null">
+        and permission = #{permission,jdbcType=VARCHAR}
+      </if>
+      <if test="available != null">
+        and available = #{available,jdbcType=BIT}
+      </if>
+      <if test="icon != null">
+        and icon = #{icon,jdbcType=VARCHAR}
+      </if>
+      <if test="priority != null">
+        and priority = #{priority,jdbcType=INTEGER}
+      </if>
+      <if test="leaf != null">
+        and leaf = #{leaf,jdbcType=BIT}
+      </if>
+      <if test="delFlag != null">
+        and del_flag = #{delFlag,jdbcType=SMALLINT}
+      </if>
+      <if test="addUserId != null">
+        and add_user_id = #{addUserId,jdbcType=INTEGER}
+      </if>
+      <if test="updUserId != null">
+        and upd_user_id = #{updUserId,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null">
+        and update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+    limit 0,1
+  </select>
+</mapper>
