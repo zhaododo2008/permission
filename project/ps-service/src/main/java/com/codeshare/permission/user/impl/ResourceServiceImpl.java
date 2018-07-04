@@ -125,7 +125,7 @@ public class ResourceServiceImpl implements IResourceService {
 //                return true;
 //            }
 //        }
-        return false;
+        return true;
     }
 
 }

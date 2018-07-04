@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>dr-web</title>
+<title>ps-web</title>
 </head>
 <body>
 <h1>ps-web start success !</h1>
