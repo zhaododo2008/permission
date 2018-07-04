@@ -42,7 +42,7 @@ Logback | 日志组件 | 1.7.7 |  [https://logback.qos.ch](https://logback.qos.c
 Druid | 数据库连接池 | 1.0.11 |  [https://github.com/alibaba/druid](https://github.com/alibaba/druid)
 Hibernate Validator | 后端校验框架 | 5.2.3.Final | [http://hibernate.org/validator/](http://hibernate.org/validator/)
 swagger2 | springfox-swagger2 | 2.6.0 | [https://www.cnblogs.com/exmyth/p/7183753.html](https://www.cnblogs.com/exmyth/p/7183753.html)
-JWT | 登录认证 | 2.4.0 | [https://www.cnblogs.com/exmyth/p/7183753.html](https://blog.csdn.net/achenyuan/article/details/80829401)
+JWT | 登录认证 | 2.4.0 | [https://blog.csdn.net/weixin_37162010/article/details/80210993](https://blog.csdn.net/weixin_37162010/article/details/80210993)
 
 ### 前端技术
 
