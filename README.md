@@ -49,7 +49,7 @@ JWT | 登录认证 | 2.4.0 | [https://blog.csdn.net/weixin_37162010/article/deta
 技术 | 名称 | 版本 |  官网
 ----|------|----|----
 vue.js | 渐进式框架 | 2.x |  [https://cn.vuejs.org/v2/guide](https://cn.vuejs.org/v2/guide)
-element | 基于 Vue 2.0 的桌面端组件库 | 1.12.1 |  [http://element.eleme.io/#/zh-CN](http://element.eleme.io/#/zh-CN)
+element | 基于 Vue 2.0 的桌面端组件库 | 2.4.3 |  [http://element.eleme.io/#/zh-CN](http://element.eleme.io/#/zh-CN)
 
 
 ## 软件需求
