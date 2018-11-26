@@ -1,6 +1,7 @@
 package com.codeshare.permission.user.dto;
 
 import com.codeshare.permission.common.BasePageRequest;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Email;
 
@@ -9,6 +10,7 @@ import java.util.Date;
 /**
  * @author
  */
+@ApiModel("用户查询")
 public class UserQueryReq extends BasePageRequest {
 
     @ApiModelProperty(hidden = true)

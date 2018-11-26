@@ -2,6 +2,7 @@ package com.codeshare.permission.user.service;
 
 
 import com.codeshare.permission.common.PageResultSet;
+import com.codeshare.permission.common.ReactPageResultSet;
 import com.codeshare.permission.user.dto.*;
 import com.codeshare.permission.user.enums.Source;
 
@@ -41,7 +42,7 @@ public interface IUserRoleFacade {
      * @param userQueryReq
      * @return
      */
-    PageResultSet<UserPageQueryRes> queryUserListByPage(UserQueryReq userQueryReq);
+    ReactPageResultSet<UserPageQueryRes> queryUserListByPage(UserQueryReq userQueryReq);
 
     /**
      * 更新角色

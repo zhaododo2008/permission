@@ -3,6 +3,7 @@ package com.codeshare.permission.user.impl;
 import com.codeshare.common.CodeHelperUtil;
 import com.codeshare.common.ModelMapperUtil;
 import com.codeshare.permission.common.PageResultSet;
+import com.codeshare.permission.common.ReactPageResultSet;
 import com.codeshare.permission.proxy.UserProxy;
 import com.codeshare.permission.user.dto.*;
 import com.codeshare.permission.user.enums.Source;
@@ -129,9 +130,12 @@ public class UserRoleFacadeImpl implements IUserRoleFacade {
 
 
     @Override
-    public PageResultSet<UserPageQueryRes> queryUserListByPage(UserQueryReq userQueryReq) {
-        PageResultSet<UserPageQueryRes> pageResultSet = new PageResultSet();
-        pageResultSet.setTotal(userService.queryTotal(userQueryReq));
+    public ReactPageResultSet<UserPageQueryRes> queryUserListByPage(UserQueryReq userQueryReq) {
+        ReactPageResultSet<UserPageQueryRes> pageResultSet = new ReactPageResultSet();
+
+        initQueryReq(userQueryReq);
+
+        long total = userService.queryTotal(userQueryReq);
         userService.queryList(userQueryReq).forEach(userQueryRes -> {
             UserPageQueryRes userPageQueryRes = ModelMapperUtil.strictMap(userQueryRes, UserPageQueryRes.class);
             UserRoleQryReq userRoleQueryReq = new UserRoleQryReq();
@@ -143,7 +147,21 @@ public class UserRoleFacadeImpl implements IUserRoleFacade {
             pageResultSet.addRow(userPageQueryRes);
         });
 
+        pageResultSet.getPagination().setCurrent(userQueryReq.getPageNo());
+        pageResultSet.getPagination().setPageSize(userQueryReq.getPageSize());
+        pageResultSet.getPagination().setTotal(total);
+
         return pageResultSet;
+    }
+
+    private void initQueryReq(UserQueryReq userQueryReq) {
+        if (CodeHelperUtil.isEmpty(userQueryReq.getPageNo())){
+            userQueryReq.setPageNo(1);
+        }
+
+        if (CodeHelperUtil.isEmpty(userQueryReq.getPageSize())){
+            userQueryReq.setPageSize(10);
+        }
     }
 
     @Override
