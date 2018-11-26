@@ -15,6 +15,12 @@
   <sql id="Base_Column_List">
     id, user_id, role_ids, source, del_flag, add_user_id, upd_user_id, create_time, update_time
   </sql>
+  <sql id="WherePrimaryKeysSql">
+    where id in
+    <foreach collection="set" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -211,5 +217,11 @@
       </if>
     </where>
     limit 0,1
+  </select>
+  <select id="selectByPrimaryKeys" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_user_role
+    <include refid="WherePrimaryKeysSql"/>
   </select>
 </mapper>

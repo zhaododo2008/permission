@@ -22,6 +22,13 @@ public interface IResourceService {
     List<ResourceQueryRes> queryList(ResourceQueryReq resourceQueryReq);
 
     /**
+     * 根据id查询资源
+     * @param id
+     * @return
+     */
+    ResourceQueryRes queryResourceById(Integer id);
+
+    /**
      * 保存资源
      * @param resourceSaveReq
      */
@@ -40,18 +47,18 @@ public interface IResourceService {
     void deleteResource(Integer id);
 
     /**
-     * 根据资源id查询权限
-     * @param resourceIds
-     * @return
-     */
-    Set<String> queryPermissions(Set<Integer> resourceIds);
-
-    /**
      * 查询用户资源
      * @param resourceIds
      * @return
      */
     List<ResourceQueryRes> queryList(Set<Integer> resourceIds);
+
+    /**
+     * 根据父资源id查询子资源
+     * @param parentIds
+     * @return
+     */
+    List<ResourceQueryRes> queryListByParentIds(String parentIds);
 
     /**
      * 根据用户权限得到菜单

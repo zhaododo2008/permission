@@ -1,39 +1,33 @@
 package com.codeshare.permission.user.dto;
 
+import com.codeshare.permission.common.BasePageRequest;
 import com.codeshare.permission.user.enums.Source;
 
 import java.util.Date;
 
 /**
- * @author 
+ * @author
  */
-public class UserQueryRes implements IUser {
+public class UserRoleQryReq extends BasePageRequest {
+    /**
+     * 编号
+     */
     private Integer id;
 
     /**
-     * 用户名
+     * 用户编号
      */
-    private String username;
+    private Integer userId;
 
     /**
-     * 密码
+     * 角色列表，示例：2,3,5,7
      */
-    private String password;
+    private String roleIds;
 
     /**
-     * 邮箱
+     * 来源
      */
-    private String email;
-
-    /**
-     * 手机号
-     */
-    private String phone;
-
-    /**
-     * 是否锁定:0:未锁定|1:锁定
-     */
-    private Boolean locked;
+    private Source source;
 
     /**
      * 1: 删除 0: 未删除
@@ -60,6 +54,8 @@ public class UserQueryRes implements IUser {
      */
     private Date updateTime;
 
+    private static final long serialVersionUID = 1L;
+
     public Integer getId() {
         return id;
     }
@@ -68,55 +64,28 @@ public class UserQueryRes implements IUser {
         this.id = id;
     }
 
-    @Override
     public Integer getUserId() {
-        return id;
+        return userId;
     }
 
-    @Override
-    public String getUsername() {
-        return username;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    @Override
+    public String getRoleIds() {
+        return roleIds;
+    }
+
+    public void setRoleIds(String roleIds) {
+        this.roleIds = roleIds;
+    }
+
     public Source getSource() {
-        return Source.DR_ADMIN;
+        return source;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public Boolean getLocked() {
-        return locked;
-    }
-
-    public void setLocked(Boolean locked) {
-        this.locked = locked;
+    public void setSource(Source source) {
+        this.source = source;
     }
 
     public Short getDelFlag() {
@@ -158,5 +127,4 @@ public class UserQueryRes implements IUser {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
-
 }

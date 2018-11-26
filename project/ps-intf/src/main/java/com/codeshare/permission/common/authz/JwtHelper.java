@@ -51,9 +51,9 @@ public class JwtHelper {
             JSONObject jo = JSON.parseObject(subject);
             String sourceStr = jo.getString("source");
             Source source = EnumUtils.getEnum(Source.class, sourceStr);
-            if (source == Source.user_center) {
+            if (source == Source.USER_CENTER) {
                 user = JsonUtils.json2obj(subject, DesignerVo.class);
-            } else if (source == Source.dr_admin) {
+            } else if (source == Source.DR_ADMIN) {
                 user = JsonUtils.json2obj(subject, UserQueryRes.class);
             }
         }

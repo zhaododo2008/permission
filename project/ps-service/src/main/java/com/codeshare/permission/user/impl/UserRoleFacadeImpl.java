@@ -3,6 +3,7 @@ package com.codeshare.permission.user.impl;
 import com.codeshare.common.CodeHelperUtil;
 import com.codeshare.common.ModelMapperUtil;
 import com.codeshare.permission.common.PageResultSet;
+import com.codeshare.permission.proxy.UserProxy;
 import com.codeshare.permission.user.dto.*;
 import com.codeshare.permission.user.enums.Source;
 import com.codeshare.permission.user.service.*;
@@ -27,7 +28,7 @@ public class UserRoleFacadeImpl implements IUserRoleFacade {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Resource
-    private UserRoleService userRoleService;
+    private IUserRoleService userRoleService;
 
     @Resource
     private IRoleService roleService;
@@ -36,10 +37,13 @@ public class UserRoleFacadeImpl implements IUserRoleFacade {
     private IResourceService resourceService;
 
     @Resource
-    private UserService userService;
+    private UserProxy userProxy;
+
+    @Resource
+    private IUserService userService;
 
     @Override
-    public List<RoleQueryRes> queryRoleList(UserRoleQueryReq userRoleQuery) {
+    public List<RoleQueryRes> queryRoleList(UserRoleQryReq userRoleQuery) {
         UserRoleQueryRes queryResult = userRoleService.queryOne(userRoleQuery);
         if (queryResult == null) {
             return Collections.EMPTY_LIST;
@@ -52,16 +56,13 @@ public class UserRoleFacadeImpl implements IUserRoleFacade {
     }
 
     @Override
-    public Set<String> queryPermissions(UserRoleQueryReq userRoleQuery) {
+    public Set<String> queryPermissions(UserRoleQryReq userRoleQuery) {
         UserRoleQueryRes queryResult = userRoleService.queryOne(userRoleQuery);
         if (queryResult == null) {
             return Collections.EMPTY_SET;
         }
         Set<Integer> roleIdSet = new HashSet<>();
-        Arrays.stream(queryResult.getRoleIds().split(",")).forEach(id -> {
-            roleIdSet.add(Integer.valueOf(id));
-
-        });
+        Arrays.stream(queryResult.getRoleIds().split(",")).forEach(id -> roleIdSet.add(Integer.valueOf(id)));
         Set<Integer> resourceIdSet = roleService.queryResources(roleIdSet.toArray(new Integer[0]));
         List<ResourceQueryRes> resourceQueryResList = resourceService.queryList(resourceIdSet);
         if (resourceQueryResList == null) {
@@ -74,74 +75,58 @@ public class UserRoleFacadeImpl implements IUserRoleFacade {
     }
 
     @Override
-    public Set<String> queryPermissions(PermissionsQueryReq permissionsQueryReq) {
-        UserRoleQueryReq userRoleQuery = new UserRoleQueryReq();
-        userRoleQuery.setUserId(permissionsQueryReq.getUserId());
-        userRoleQuery.setSource(permissionsQueryReq.getSource());
-        UserRoleQueryRes queryResult = userRoleService.queryOne(userRoleQuery);
-        if (queryResult == null) {
-            return Collections.EMPTY_SET;
-        }
-        Set<Integer> roleIdSet = new HashSet<>();
-        Arrays.stream(queryResult.getRoleIds().split(",")).forEach(id -> {
-            roleIdSet.add(Integer.valueOf(id));
-        });
-        Set<Integer> resourceIdSet = roleService.queryResources(roleIdSet.toArray(new Integer[0]));
-        List<ResourceQueryRes> resourceQueryResList = filterResource(resourceService.queryList(resourceIdSet), permissionsQueryReq);
-        return resourceQueryResList.stream()
-                .filter(resourceQueryRes -> StringUtils.isNotBlank(resourceQueryRes.getPermission()))
-                .map(ResourceQueryRes::getPermission)
-                .collect(Collectors.toSet());
+    public List<Category> queryCategoryList(CategoryQueryReq categoryQueryReq) {
+        //查询设计师拥有的资源
+        Set<Integer> userResources = queryUserResource(categoryQueryReq.getUserId(), Source.USER_CENTER);
+        ResourceQueryReq resourceQueryReq = new ResourceQueryReq();
+        resourceQueryReq.setParentId(categoryQueryReq.getParentId());
+        //构建category和对应的authority返回给客户端
+        return buildCategoryList(resourceQueryReq, userResources);
     }
 
-    @Override
-    public List<Category> queryDrClientPermissions(PermissionsQueryReq permissionsQueryReq) {
-        UserRoleQueryReq userRoleQueryReq = new UserRoleQueryReq();
-        userRoleQueryReq.setUserId(permissionsQueryReq.getUserId());
-        userRoleQueryReq.setSource(Source.user_center);
+    private Set<Integer> queryUserResource(Integer userId, Source source) {
+        UserRoleQryReq userRoleQueryReq = new UserRoleQryReq();
+        userRoleQueryReq.setUserId(userId);
+        userRoleQueryReq.setSource(source);
         UserRoleQueryRes userRoleQueryRes = Optional.ofNullable(userRoleService.queryOne(userRoleQueryReq)).orElseGet(() -> new UserRoleQueryRes());
         Integer[] roleIds = CodeHelperUtil.convertIdSplit(userRoleQueryRes.getRoleIds());
-        Set<Integer> resources = roleService.queryResources(roleIds);
+        return roleService.queryResources(roleIds);
+    }
+
+
+    private List<Category> buildCategoryList(ResourceQueryReq resourceQueryReq, Set<Integer> userResources) {
+        //查询所在的资源
+        String parentIds = Optional
+                .ofNullable(resourceService.queryResourceById(resourceQueryReq.getParentId()))
+                .map(ResourceQueryRes::getParentIds)
+                .orElse(null);
+        if (parentIds == null) {
+            return Collections.EMPTY_LIST;
+        }
+        parentIds = parentIds + resourceQueryReq.getParentId() + "/";
+        List<ResourceQueryRes> resList = resourceService.queryListByParentIds(parentIds);
         List<Category> categoryList = new ArrayList<>();
-        ResourceQueryReq resourceQueryReq = new ResourceQueryReq();
-        resourceQueryReq.setParentId(permissionsQueryReq.getParentId());
-        Optional.ofNullable(resourceService.queryList(resourceQueryReq)).ifPresent(list -> list.forEach(resourceQueryRes -> {
-            Category category = new Category();
-            category.setCategory(resourceQueryRes.getPermission());
-            category.setVisibility(resources.contains(resourceQueryRes.getId()));
-            resourceQueryReq.setParentId(resourceQueryRes.getId());
-            List<Authority> authorityList = new ArrayList<>();
-            Optional.ofNullable(resourceService.queryList(resourceQueryReq)).ifPresent(childList -> childList.forEach(childResourceQueryRes -> {
-                Authority authority = new Authority();
-                authority.setAuthorityId(childResourceQueryRes.getPermission());
-                authority.setVisibility(resources.contains(childResourceQueryRes.getId()));
-                authorityList.add(authority);
-            }));
-            category.setChild(authorityList);
-            categoryList.add(category);
-        }));
+        resList.stream()
+                .filter(res -> res.getParentId().equals(resourceQueryReq.getParentId()))
+                .forEach(res -> {
+                    Category category = new Category();
+                    category.setCategory(res.getPermission());
+                    category.setVisibility(userResources.contains(res.getId()));
+                    List<Authority> authorityList = new ArrayList<>();
+                    resList.stream()
+                            .filter(res2 -> res2.getParentId().equals(res.getId()))
+                            .forEach(res2 -> {
+                                Authority authority = new Authority();
+                                authority.setAuthorityId(res2.getPermission());
+                                authority.setVisibility(userResources.contains(res2.getId()));
+                                authorityList.add(authority);
+                            });
+                    category.setChild(authorityList);
+                    categoryList.add(category);
+                });
         return categoryList;
     }
 
-
-    private List<ResourceQueryRes> filterResource(List<ResourceQueryRes> resourceQueryResList, PermissionsQueryReq permissionsQueryReq) {
-        if (resourceQueryResList == null) {
-            return Collections.EMPTY_LIST;
-        }
-        if (permissionsQueryReq.getParentId() != null) {
-            resourceQueryResList = resourceQueryResList
-                    .stream()
-                    .filter(resourceQueryRes -> permissionsQueryReq.getParentId().equals(resourceQueryRes.getParentId()))
-                    .collect(Collectors.toList());
-        }
-        if (permissionsQueryReq.getType() != null) {
-            resourceQueryResList = resourceQueryResList
-                    .stream()
-                    .filter(resourceQueryRes -> permissionsQueryReq.getType().equals(resourceQueryRes.getParentId()))
-                    .collect(Collectors.toList());
-        }
-        return resourceQueryResList;
-    }
 
     @Override
     public PageResultSet<UserPageQueryRes> queryUserListByPage(UserQueryReq userQueryReq) {
@@ -149,10 +134,9 @@ public class UserRoleFacadeImpl implements IUserRoleFacade {
         pageResultSet.setTotal(userService.queryTotal(userQueryReq));
         userService.queryList(userQueryReq).forEach(userQueryRes -> {
             UserPageQueryRes userPageQueryRes = ModelMapperUtil.strictMap(userQueryRes, UserPageQueryRes.class);
-
-            UserRoleQueryReq userRoleQueryReq = new UserRoleQueryReq();
+            UserRoleQryReq userRoleQueryReq = new UserRoleQryReq();
             userRoleQueryReq.setUserId(userQueryRes.getUserId());
-            userRoleQueryReq.setSource(Source.dr_admin);
+            userRoleQueryReq.setSource(Source.DR_ADMIN);
             List<RoleQueryRes> roleList = queryRoleList(userRoleQueryReq);
             userPageQueryRes.setRoleList(roleList);
 
@@ -164,26 +148,11 @@ public class UserRoleFacadeImpl implements IUserRoleFacade {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateRoles(UserRoleSaveReq userRoleSaveReq) {
+    public void saveOrUpdateRoles(UserRoleSaveOrUpdateReq req) {
         //先删后增
-        userRoleService.deleteByUserId(userRoleSaveReq.getUserId());
-        userRoleService.saveUserRole(userRoleSaveReq);
+        userRoleService.deleteByUserId(req.getUserId());
+        userRoleService.saveUserRole(req);
     }
-
-    @Override
-    public void syncUserRole(){
-
-    }
-
-    /**
-     * 获取设计师用户数量
-     *
-     * @return
-     */
-    private int getDesignerTotal(){
-        return 0;
-    }
-
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -191,11 +160,11 @@ public class UserRoleFacadeImpl implements IUserRoleFacade {
         //保存系统用户
         Integer userId = userService.saveUser(userSaveReq);
         //更新用户权限
-        UserRoleSaveReq userRoleSaveReq = new UserRoleSaveReq();
+        UserRoleSaveOrUpdateReq userRoleSaveReq = new UserRoleSaveOrUpdateReq();
         userRoleSaveReq.setUserId(userId);
         userRoleSaveReq.setRoleIds(userSaveReq.getRoleIds());
-        userRoleSaveReq.setSource(Source.dr_admin);
-        updateRoles(userRoleSaveReq);
+        userRoleSaveReq.setSource(Source.DR_ADMIN);
+        saveOrUpdateRoles(userRoleSaveReq);
     }
 
     @Override
@@ -204,11 +173,24 @@ public class UserRoleFacadeImpl implements IUserRoleFacade {
         //保存系统用户
         userService.updateUser(userUpdateReq);
         //更新用户权限
-        UserRoleSaveReq userRoleSaveReq = new UserRoleSaveReq();
+        UserRoleSaveOrUpdateReq userRoleSaveReq = new UserRoleSaveOrUpdateReq();
         userRoleSaveReq.setUserId(userUpdateReq.getId());
         userRoleSaveReq.setRoleIds(userUpdateReq.getRoleIds());
-        userRoleSaveReq.setSource(Source.dr_admin);
-        updateRoles(userRoleSaveReq);
+        userRoleSaveReq.setSource(Source.DR_ADMIN);
+        saveOrUpdateRoles(userRoleSaveReq);
     }
+
+    @Override
+    public Collection queryPermissions(Integer userId, Source source, Integer parentId) {
+        if (source == Source.USER_CENTER) {
+            //设置permissions
+            CategoryQueryReq categoryQueryReq = new CategoryQueryReq();
+            categoryQueryReq.setUserId(userId);
+            categoryQueryReq.setParentId(parentId);
+            return queryCategoryList(categoryQueryReq);
+        }
+        return null;
+    }
+
 
 }

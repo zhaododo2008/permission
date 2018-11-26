@@ -3,7 +3,9 @@ package com.codeshare.permission.user.service;
 
 import com.codeshare.permission.common.PageResultSet;
 import com.codeshare.permission.user.dto.*;
+import com.codeshare.permission.user.enums.Source;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -18,28 +20,21 @@ public interface IUserRoleFacade {
      * @param userRoleQuery
      * @return
      */
-    List<RoleQueryRes> queryRoleList(UserRoleQueryReq userRoleQuery);
+    List<RoleQueryRes> queryRoleList(UserRoleQryReq userRoleQuery);
 
     /**
      * 根据用户名角色等查找其权限
      * @param userRoleQuery
      * @return
      */
-    Set<String>  queryPermissions(UserRoleQueryReq userRoleQuery);
+    Set<String>  queryPermissions(UserRoleQryReq userRoleQuery);
 
     /**
-     * 根据用户信息查询其权限
-     * @param permissionsQueryReq
+     * 查询dr客户端对应的权限
+     * @param categoryQueryReq
      * @return
      */
-    Set<String> queryPermissions(PermissionsQueryReq permissionsQueryReq);
-
-    /**
-     * 查询dr客户端权限
-     * @param permissionsQueryReq
-     * @return
-     */
-    List<Category> queryDrClientPermissions(PermissionsQueryReq permissionsQueryReq);
+    List<Category> queryCategoryList(CategoryQueryReq categoryQueryReq);
 
     /**
      * 分页查询系统用户列表
@@ -52,12 +47,7 @@ public interface IUserRoleFacade {
      * 更新角色
      * @param userRoleSaveReq
      */
-    void updateRoles(UserRoleSaveReq userRoleSaveReq);
-
-    /**
-     * 同步设计师用户的角色
-     */
-    void syncUserRole();
+    void saveOrUpdateRoles(UserRoleSaveOrUpdateReq userRoleSaveReq);
 
     /**
      * 保存系统用户
@@ -70,5 +60,14 @@ public interface IUserRoleFacade {
      * @param userUpdateReq
      */
     void updateUser(UserUpdateReq userUpdateReq);
+
+    /**
+     * 获取账号权限
+     * @param userId
+     * @param source
+     * @param parentId
+     * @return
+     */
+    Collection queryPermissions(Integer userId, Source source, Integer parentId);
 
 }

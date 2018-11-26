@@ -1,6 +1,5 @@
 package com.codeshare.permission.user.dto;
 
-import com.codeshare.permission.user.enums.Source;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
@@ -18,14 +17,15 @@ public class ChangePasswordReq {
     @NotNull(message = "用户id不能为空")
     private Integer userId;
 
+    @ApiModelProperty("旧密码")
+    @NotBlank(message = "密码不能为空")
+    @Length(min = 6,message = "密码长度不能低于6位")
+    private String oldPassword;
+
     @ApiModelProperty("新密码")
     @NotBlank(message = "密码不能为空")
     @Length(min = 6,message = "密码长度不能低于6位")
     private String newPassword;
-
-    @ApiModelProperty("用户来源：|dr:dr|dr_admin:DR管理平台|user_center:用户中心|mr_beta:Mr.Beta|")
-    @NotNull(message = "用户来源不能为空")
-    private Source source;
 
     public Integer getUserId() {
         return userId;
@@ -43,11 +43,11 @@ public class ChangePasswordReq {
         this.newPassword = newPassword;
     }
 
-    public Source getSource() {
-        return source;
+    public String getOldPassword() {
+        return oldPassword;
     }
 
-    public void setSource(Source source) {
-        this.source = source;
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
     }
 }

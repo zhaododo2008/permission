@@ -24,6 +24,12 @@
     id, name, type, path, file_path, parent_id, parent_ids, permission, available, icon,
     priority, leaf, del_flag, add_user_id, upd_user_id, create_time, update_time
   </sql>
+  <sql id="WherePrimaryKeysSql">
+    where id in
+    <foreach collection="set" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -352,5 +358,19 @@
       </if>
     </where>
     limit 0,1
+  </select>
+
+  <select id="selectByPrimaryKeys" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_resource
+    <include refid="WherePrimaryKeysSql"/>
+  </select>
+  <select id="selectByParentIdsLike" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_resource
+    where parent_ids like #{parentIds}
+    order by priority
   </select>
 </mapper>

@@ -74,7 +74,7 @@ public class DesignerVo implements IUser {
 
     @Override
     public Source getSource() {
-        return Source.user_center;
+        return Source.USER_CENTER;
     }
 
     public void setUserId(Integer userId) {

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author cjbi
  */
-public interface UserService {
+public interface IUserService {
 
     /**
      * 分页查询系统用户列表

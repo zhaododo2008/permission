@@ -3,7 +3,9 @@ package com.codeshare.permission.user.impl;
 import com.codeshare.common.ModelMapperUtil;
 import com.codeshare.permission.common.Constants;
 import com.codeshare.permission.common.ResponseConstant;
+import com.codeshare.permission.common.authz.permission.WildcardPermission;
 import com.codeshare.permission.common.exception.BusinessException;
+import com.codeshare.permission.common.util.CollectionUtils;
 import com.codeshare.permission.user.dao.ResourceDao;
 import com.codeshare.permission.user.dto.ResourceQueryReq;
 import com.codeshare.permission.user.dto.ResourceQueryRes;
@@ -40,6 +42,15 @@ public class ResourceServiceImpl implements IResourceService {
     }
 
     @Override
+    public ResourceQueryRes queryResourceById(Integer id) {
+        Resource resource = resourceDao.selectByPrimaryKey(id);
+        if (resource == null) {
+            return null;
+        }
+        return ModelMapperUtil.strictMap(resource, ResourceQueryRes.class);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public void saveResource(ResourceSaveReq resourceSaveReq) {
         Resource resource = ModelMapperUtil.strictMap(resourceSaveReq, Resource.class);
@@ -70,27 +81,21 @@ public class ResourceServiceImpl implements IResourceService {
     }
 
     @Override
-    public Set<String> queryPermissions(Set<Integer> resourceIds) {
-        Set<String> permissions = new HashSet<>();
-
-        for (Integer resourceId : resourceIds) {
-            String permission = Optional.ofNullable(resourceDao.selectByPrimaryKey(resourceId))
-                    .map(Resource::getPermission)
-                    .orElse("");
-            if (StringUtils.isNotEmpty(permission)) {
-                permissions.add(permission);
-            }
+    public List<ResourceQueryRes> queryList(Set<Integer> resourceIds) {
+        if (CollectionUtils.isEmpty(resourceIds)) {
+            return Collections.EMPTY_LIST;
         }
-        return permissions;
+        List<Resource> resourceList = Optional.ofNullable(resourceDao.selectByPrimaryKeys(resourceIds))
+                .orElseGet(() -> Collections.EMPTY_LIST);
+        return ModelMapperUtil.strictMapList(resourceList, ResourceQueryRes.class);
     }
 
     @Override
-    public List<ResourceQueryRes> queryList(Set<Integer> resourceIds) {
-        List<ResourceQueryRes> res = new ArrayList<>();
-        resourceIds.forEach(resourceId-> Optional
-                .ofNullable(resourceDao.selectByPrimaryKey(resourceId))
-                .ifPresent(resource -> res.add(ModelMapperUtil.strictMap(resource,ResourceQueryRes.class))));
-        return res;
+    public List<ResourceQueryRes> queryListByParentIds(String parentIds) {
+        List<Resource> resourceList = Optional
+                .ofNullable(resourceDao.selectByParentIdsLike(parentIds + "%"))
+                .orElseGet(() -> Collections.EMPTY_LIST);
+        return ModelMapperUtil.strictMapList(resourceList, ResourceQueryRes.class);
     }
 
     @Override
@@ -103,7 +108,7 @@ public class ResourceServiceImpl implements IResourceService {
             if (Constants.RESOURCE_ROOT_ID == resource.getParentId()) {
                 continue;
             }
-            if (resource.getType() != ResourceType.menu) {
+            if (resource.getType() != ResourceType.MENU) {
                 continue;
             }
             if (!hasPermission(permissions, resource)) {
@@ -115,17 +120,18 @@ public class ResourceServiceImpl implements IResourceService {
     }
 
     private boolean hasPermission(Set<String> permissions, Resource resource) {
-        if (org.springframework.util.StringUtils.isEmpty(resource.getPermission())) {
+        if (StringUtils.isEmpty(resource.getPermission())) {
             return true;
         }
-//        for (String permission : permissions) {
-//            WildcardPermission p1 = new WildcardPermission(permission);
-//            WildcardPermission p2 = new WildcardPermission(resource.getPermission());
-//            if (p1.implies(p2) || p2.implies(p1)) {
-//                return true;
-//            }
-//        }
-        return true;
+        for (String permission : permissions) {
+            WildcardPermission p1 = new WildcardPermission(permission);
+            WildcardPermission p2 = new WildcardPermission(resource.getPermission());
+            if (p1.implies(p2) || p2.implies(p1)) {
+                return true;
+            }
+        }
+        return false;
     }
+
 
 }

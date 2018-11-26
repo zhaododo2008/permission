@@ -10,9 +10,8 @@ import com.codeshare.permission.common.exception.BusinessException;
 import com.codeshare.permission.common.util.PasswordUtil;
 import com.codeshare.permission.user.dao.UserDao;
 import com.codeshare.permission.user.dto.*;
-import com.codeshare.permission.user.enums.Source;
 import com.codeshare.permission.user.po.User;
-import com.codeshare.permission.user.service.UserService;
+import com.codeshare.permission.user.service.IUserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +26,7 @@ import java.util.Optional;
  * @author cjbi
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements IUserService {
 
     @Resource
     private UserDao userDao;
@@ -152,10 +151,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void changePassword(ChangePasswordReq changePasswordReq) {
-        if (changePasswordReq.getSource() != Source.dr_admin) {
-            throw new BusinessException("只支持系统用户密码修改");
-        }
         User user = userDao.selectByPrimaryKey(changePasswordReq.getUserId());
+        Optional<User> optional = Optional.ofNullable(user);
+        optional.orElseThrow(() -> new BusinessException("用户不存在"));
+        optional.filter(u -> PasswordUtil.verify(changePasswordReq.getOldPassword(), u.getPassword()))
+                .orElseThrow(() -> new BusinessException("原密码错误"));
         user.setPassword(PasswordUtil.generate(changePasswordReq.getNewPassword()));
         userDao.updateByPrimaryKeySelective(user);
     }

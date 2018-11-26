@@ -61,8 +61,6 @@ public class ResourceQueryRes implements Serializable {
     @ApiModelProperty("修改时间")
     private Date updateTime;
 
-    private static final long serialVersionUID = 1L;
-
     public Integer getId() {
         return id;
     }
@@ -198,10 +196,4 @@ public class ResourceQueryRes implements Serializable {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
-
-    @ApiModelProperty("资源类型名称")
-    public String getTypeName() {
-        return type.getInfo();
-    }
-
 }

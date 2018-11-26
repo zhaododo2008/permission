@@ -6,9 +6,10 @@ package com.codeshare.permission.user.enums;
  */
 public  enum Source {
 
-    dr_admin("DR管理平台"),
-    user_center("用户中心"),
-    mr_beta("Mr.Beta");
+    UNKNOWN("未知"),
+    DR_ADMIN("DR管理平台"),
+    USER_CENTER("用户中心"),
+    MR_BETA("MR.BETA");
 
     private String info;
 

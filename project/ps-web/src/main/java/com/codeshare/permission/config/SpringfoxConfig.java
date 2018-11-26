@@ -33,6 +33,7 @@ public class SpringfoxConfig {
         tokenPar.name(Constants.TOKEN_HEADER)
                 .description("令牌")
                 .modelRef(new ModelRef("string"))
+                .defaultValue("eyJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiI5OTk5OTk5OTkiLCJzdWIiOiJ7XCJpZFwiOiA5OTk5OTk5OTksXCJ1c2VySWRcIjogOTk5OTk5OTk5LFwibmFtZVwiOiBcIuW8gOWPkeS6uuWRmOa1i-ivlei0puWPt1wiIH0iLCJpYXQiOjE1Mjk0ODk2NTUsImp0aSI6Ijk5OTk5OTk5OSJ9.ktDwazqyHuk-gjnPuvV5i68S7xc2FVpL68kAAdijeUQ")
                 .parameterType("header")
                 .required(false)
                 .build();

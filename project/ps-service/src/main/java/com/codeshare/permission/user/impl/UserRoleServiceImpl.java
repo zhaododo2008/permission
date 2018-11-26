@@ -4,11 +4,11 @@ import com.codeshare.common.ModelMapperUtil;
 import com.codeshare.permission.common.ResponseConstant;
 import com.codeshare.permission.common.exception.BusinessException;
 import com.codeshare.permission.user.dao.UserRoleDao;
-import com.codeshare.permission.user.dto.UserRoleQueryReq;
+import com.codeshare.permission.user.dto.UserRoleQryReq;
 import com.codeshare.permission.user.dto.UserRoleQueryRes;
-import com.codeshare.permission.user.dto.UserRoleSaveReq;
+import com.codeshare.permission.user.dto.UserRoleSaveOrUpdateReq;
 import com.codeshare.permission.user.po.UserRole;
-import com.codeshare.permission.user.service.UserRoleService;
+import com.codeshare.permission.user.service.IUserRoleService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,13 +22,13 @@ import java.util.Optional;
  * @author cjbi
  */
 @Service
-public class UserRoleServiceImpl implements UserRoleService {
+public class UserRoleServiceImpl implements IUserRoleService {
 
     @Resource
     private UserRoleDao userRoleDao;
 
     @Override
-    public List<UserRoleQueryRes> queryList(UserRoleQueryReq userRoleQuery) {
+    public List<UserRoleQueryRes> queryList(UserRoleQryReq userRoleQuery) {
         List<UserRole> userRole = userRoleDao.selectList(userRoleQuery);
         if (userRole != null) {
             return Collections.EMPTY_LIST;
@@ -37,7 +37,7 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     @Override
-    public UserRoleQueryRes queryOne(UserRoleQueryReq userRoleQuery) {
+    public UserRoleQueryRes queryOne(UserRoleQryReq userRoleQuery) {
         UserRole userRole = userRoleDao.selectOne(userRoleQuery);
         if (userRole == null) {
             return null;
@@ -47,18 +47,17 @@ public class UserRoleServiceImpl implements UserRoleService {
 
     @Override
     public void deleteByUserId(Integer userId) {
-        UserRoleQueryReq userRoleQueryReq = new UserRoleQueryReq();
+        UserRoleQryReq userRoleQueryReq = new UserRoleQryReq();
         userRoleQueryReq.setUserId(userId);
         Optional.ofNullable(userRoleDao.selectOne(userRoleQueryReq)).ifPresent(userRole -> userRoleDao.deleteByPrimaryKey(userRole.getId()));
     }
 
     @Override
-    public void saveUserRole(UserRoleSaveReq userRoleSaveReq) {
+    public void saveUserRole(UserRoleSaveOrUpdateReq userRoleSaveReq) {
         UserRole userRole = ModelMapperUtil.strictMap(userRoleSaveReq, UserRole.class);
         int rows = userRoleDao.insertSelective(userRole);
         if (rows == 0) {
             throw new BusinessException(ResponseConstant.DB_INSERT_ERROR,ResponseConstant.DB_INSERT_ERROR_MSG);
         }
     }
-
 }
