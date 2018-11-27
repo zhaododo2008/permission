@@ -1,5 +1,6 @@
 package com.codeshare.permission.controller;
 
+import com.codeshare.common.CodeHelperUtil;
 import com.codeshare.permission.common.ResponseConstant;
 import com.codeshare.permission.common.ResponseVo;
 import com.codeshare.permission.common.authz.JwtHelper;
@@ -52,13 +53,16 @@ public class AdminUserController {
 
     @RequestMapping(value = "/user", method = RequestMethod.DELETE)
     @com.wordnik.swagger.annotations.ApiOperation("删除系统用户")
-    public ResponseVo deleteUser(@RequestBody Integer[] ids) {
+    public ResponseVo deleteUser(@RequestBody UserDeleteReq deleteReq) {
         IUser user = JwtHelper.getCurrentUser();
-        boolean isSelf = Arrays.stream(ids).anyMatch(id -> id.equals(user.getUserId()));
-        if (isSelf) {
-            return ResponseVo.failure(ResponseConstant.FAILED_DEL_OWN, ResponseConstant.FAILED_DEL_OWN_MSG);
+
+        if (CodeHelperUtil.isNotEmpty(user)){
+            boolean isSelf = Arrays.stream(deleteReq.getUserIds().toArray()).anyMatch(id -> id.equals(user.getUserId()));
+            if (isSelf) {
+                return ResponseVo.failure(ResponseConstant.FAILED_DEL_OWN, ResponseConstant.FAILED_DEL_OWN_MSG);
+            }
         }
-        Arrays.asList(ids).forEach(id -> userService.deleteUser(id));
+        deleteReq.getUserIds().forEach(id -> userService.deleteUser(id));
         return ResponseVo.success();
     }
 
