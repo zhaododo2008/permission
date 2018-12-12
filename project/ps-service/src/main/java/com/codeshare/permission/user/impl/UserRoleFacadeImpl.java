@@ -130,12 +130,13 @@ public class UserRoleFacadeImpl implements IUserRoleFacade {
 
 
     @Override
-    public ReactPageResultSet<UserPageQueryRes> queryUserListByPage(UserQueryReq userQueryReq) {
-        ReactPageResultSet<UserPageQueryRes> pageResultSet = new ReactPageResultSet();
+    public PageResultSet<UserPageQueryRes> queryUserListByPage(UserQueryReq userQueryReq) {
+        PageResultSet<UserPageQueryRes> pageResultSet = new PageResultSet();
 
         initQueryReq(userQueryReq);
 
         long total = userService.queryTotal(userQueryReq);
+        pageResultSet.setTotal(total);
         userService.queryList(userQueryReq).forEach(userQueryRes -> {
             UserPageQueryRes userPageQueryRes = ModelMapperUtil.strictMap(userQueryRes, UserPageQueryRes.class);
             UserRoleQryReq userRoleQueryReq = new UserRoleQryReq();
@@ -146,10 +147,6 @@ public class UserRoleFacadeImpl implements IUserRoleFacade {
 
             pageResultSet.addRow(userPageQueryRes);
         });
-
-        pageResultSet.getPagination().setCurrent(userQueryReq.getPageNo());
-        pageResultSet.getPagination().setPageSize(userQueryReq.getPageSize());
-        pageResultSet.getPagination().setTotal(total);
 
         return pageResultSet;
     }

@@ -42,7 +42,7 @@ public interface IUserRoleFacade {
      * @param userQueryReq
      * @return
      */
-    ReactPageResultSet<UserPageQueryRes> queryUserListByPage(UserQueryReq userQueryReq);
+    PageResultSet<UserPageQueryRes> queryUserListByPage(UserQueryReq userQueryReq);
 
     /**
      * 更新角色
