@@ -10,12 +10,22 @@ public class Product implements Serializable {
     /**
      * 主键
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 商品名称
      */
     private String name;
+
+    /**
+     * spuId
+     */
+    private Integer spuId;
+
+    /**
+     * skuid
+     */
+    private Integer skuId;
 
     /**
      * 长
@@ -33,9 +43,14 @@ public class Product implements Serializable {
     private Integer height;
 
     /**
-     * 来源 1:DR系统 2:BOSS系统
+     * 来源 1:外部系统 2:内部系统
      */
     private Short source;
+
+    /**
+     * 0:默认 1:有模型
+     */
+    private Short modelFlag;
 
     /**
      * 类目id
@@ -88,9 +103,14 @@ public class Product implements Serializable {
     private Short status;
 
     /**
-     * 商品类型 0:普通商品
+     *  模型类型 0:成品sku 1.定制品sku
      */
-    private Integer type;
+    private Short type;
+
+    /**
+     * 商品版本
+     */
+    private Integer version;
 
     /**
      * 添加人
@@ -119,11 +139,11 @@ public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -133,6 +153,22 @@ public class Product implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getSpuId() {
+        return spuId;
+    }
+
+    public void setSpuId(Integer spuId) {
+        this.spuId = spuId;
+    }
+
+    public Integer getSkuId() {
+        return skuId;
+    }
+
+    public void setSkuId(Integer skuId) {
+        this.skuId = skuId;
     }
 
     public Integer getLength() {
@@ -165,6 +201,14 @@ public class Product implements Serializable {
 
     public void setSource(Short source) {
         this.source = source;
+    }
+
+    public Short getModelFlag() {
+        return modelFlag;
+    }
+
+    public void setModelFlag(Short modelFlag) {
+        this.modelFlag = modelFlag;
     }
 
     public Integer getCategoryId() {
@@ -247,12 +291,20 @@ public class Product implements Serializable {
         this.status = status;
     }
 
-    public Integer getType() {
+    public Short getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(Short type) {
         this.type = type;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     public Integer getAddUserId() {

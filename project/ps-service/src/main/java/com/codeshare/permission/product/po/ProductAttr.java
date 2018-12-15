@@ -6,16 +6,21 @@ import java.util.Date;
 /**
  * @author 
  */
-public class ProductDetail implements Serializable {
+public class ProductAttr implements Serializable {
     /**
      * 主键
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 商品id
      */
-    private Integer productId;
+    private Long productId;
+
+    /**
+     * 商品拓展属性信息
+     */
+    private String attrInfo;
 
     /**
      * 添加人
@@ -42,27 +47,30 @@ public class ProductDetail implements Serializable {
      */
     private Date updateTime;
 
-    /**
-     * 商品明细
-     */
-    private String content;
-
     private static final long serialVersionUID = 1L;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getProductId() {
+    public Long getProductId() {
         return productId;
     }
 
-    public void setProductId(Integer productId) {
+    public void setProductId(Long productId) {
         this.productId = productId;
+    }
+
+    public String getAttrInfo() {
+        return attrInfo;
+    }
+
+    public void setAttrInfo(String attrInfo) {
+        this.attrInfo = attrInfo;
     }
 
     public Integer getAddUserId() {
@@ -103,13 +111,5 @@ public class ProductDetail implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 }

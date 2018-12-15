@@ -10,12 +10,12 @@ public class ProductFile implements Serializable {
     /**
      * 主键
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 商品id
      */
-    private Integer productId;
+    private Long productId;
 
     /**
      * 文件名称
@@ -23,10 +23,13 @@ public class ProductFile implements Serializable {
     private String fName;
 
     /**
-     * 1:头图 2:预览图
+     * 1:缩略图 2:明细图
      */
     private Integer type;
 
+    /**
+     * 图片url
+     */
     private String url;
 
     /**
@@ -56,19 +59,19 @@ public class ProductFile implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getProductId() {
+    public Long getProductId() {
         return productId;
     }
 
-    public void setProductId(Integer productId) {
+    public void setProductId(Long productId) {
         this.productId = productId;
     }
 

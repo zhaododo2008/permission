@@ -3,13 +3,13 @@ package com.codeshare.permission.product.dao;
 import com.codeshare.permission.product.po.Product;
 
 public interface IProductDao {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Long id);
 
     int insert(Product record);
 
     int insertSelective(Product record);
 
-    Product selectByPrimaryKey(Integer id);
+    Product selectByPrimaryKey(Long id);
 
     int updateByPrimaryKeySelective(Product record);
 

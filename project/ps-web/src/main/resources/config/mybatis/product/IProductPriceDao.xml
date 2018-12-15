@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.codeshare.permission.product.dao.IProductPriceDao">
   <resultMap id="BaseResultMap" type="com.codeshare.permission.product.po.ProductPrice">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="product_id" jdbcType="INTEGER" property="productId" />
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="product_id" jdbcType="BIGINT" property="productId" />
     <result column="quoted_price" jdbcType="DECIMAL" property="quotedPrice" />
     <result column="purchase_price" jdbcType="DECIMAL" property="purchasePrice" />
     <result column="sale_price" jdbcType="DECIMAL" property="salePrice" />
@@ -20,15 +20,15 @@
     id, product_id, quoted_price, purchase_price, sale_price, market_price, mark_up_rate, 
     tax_rat, add_user_id, upd_user_id, del_flag, create_time, update_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_product_price
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_product_price
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.codeshare.permission.product.po.ProductPrice">
     insert into t_product_price (id, product_id, quoted_price, 
@@ -36,7 +36,7 @@
       mark_up_rate, tax_rat, add_user_id, 
       upd_user_id, del_flag, create_time, 
       update_time)
-    values (#{id,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, #{quotedPrice,jdbcType=DECIMAL}, 
+    values (#{id,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{quotedPrice,jdbcType=DECIMAL}, 
       #{purchasePrice,jdbcType=DECIMAL}, #{salePrice,jdbcType=DECIMAL}, #{marketPrice,jdbcType=DECIMAL}, 
       #{markUpRate,jdbcType=DECIMAL}, #{taxRat,jdbcType=DECIMAL}, #{addUserId,jdbcType=INTEGER}, 
       #{updUserId,jdbcType=INTEGER}, #{delFlag,jdbcType=SMALLINT}, #{createTime,jdbcType=TIMESTAMP}, 
@@ -87,10 +87,10 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=BIGINT},
       </if>
       <if test="productId != null">
-        #{productId,jdbcType=INTEGER},
+        #{productId,jdbcType=BIGINT},
       </if>
       <if test="quotedPrice != null">
         #{quotedPrice,jdbcType=DECIMAL},
@@ -131,7 +131,7 @@
     update t_product_price
     <set>
       <if test="productId != null">
-        product_id = #{productId,jdbcType=INTEGER},
+        product_id = #{productId,jdbcType=BIGINT},
       </if>
       <if test="quotedPrice != null">
         quoted_price = #{quotedPrice,jdbcType=DECIMAL},
@@ -167,11 +167,11 @@
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.codeshare.permission.product.po.ProductPrice">
     update t_product_price
-    set product_id = #{productId,jdbcType=INTEGER},
+    set product_id = #{productId,jdbcType=BIGINT},
       quoted_price = #{quotedPrice,jdbcType=DECIMAL},
       purchase_price = #{purchasePrice,jdbcType=DECIMAL},
       sale_price = #{salePrice,jdbcType=DECIMAL},
@@ -183,6 +183,6 @@
       del_flag = #{delFlag,jdbcType=SMALLINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

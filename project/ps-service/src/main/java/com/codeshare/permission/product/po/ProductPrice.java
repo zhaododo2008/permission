@@ -11,12 +11,12 @@ public class ProductPrice implements Serializable {
     /**
      * 主键
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 商品id
      */
-    private Integer productId;
+    private Long productId;
 
     /**
      * 厂家报价
@@ -29,7 +29,7 @@ public class ProductPrice implements Serializable {
     private BigDecimal purchasePrice;
 
     /**
-     * 销售售价
+     * 售价
      */
     private BigDecimal salePrice;
 
@@ -75,19 +75,19 @@ public class ProductPrice implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getProductId() {
+    public Long getProductId() {
         return productId;
     }
 
-    public void setProductId(Integer productId) {
+    public void setProductId(Long productId) {
         this.productId = productId;
     }
 

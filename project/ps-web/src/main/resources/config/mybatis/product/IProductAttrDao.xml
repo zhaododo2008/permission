@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.codeshare.permission.product.dao.IProductFileDao">
-  <resultMap id="BaseResultMap" type="com.codeshare.permission.product.po.ProductFile">
+<mapper namespace="com.codeshare.permission.product.dao.IProductAttrDao">
+  <resultMap id="BaseResultMap" type="com.codeshare.permission.product.po.ProductAttr">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="product_id" jdbcType="BIGINT" property="productId" />
-    <result column="f_name" jdbcType="VARCHAR" property="fName" />
-    <result column="type" jdbcType="INTEGER" property="type" />
-    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="attr_info" jdbcType="VARCHAR" property="attrInfo" />
     <result column="add_user_id" jdbcType="INTEGER" property="addUserId" />
     <result column="upd_user_id" jdbcType="INTEGER" property="updUserId" />
     <result column="del_flag" jdbcType="SMALLINT" property="delFlag" />
@@ -14,31 +12,28 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, product_id, f_name, type, url, add_user_id, upd_user_id, del_flag, create_time, 
-    update_time
+    id, product_id, attr_info, add_user_id, upd_user_id, del_flag, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from t_product_file
+    from t_product_attr
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_product_file
+    delete from t_product_attr
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.codeshare.permission.product.po.ProductFile">
-    insert into t_product_file (id, product_id, f_name, 
-      type, url, add_user_id, 
-      upd_user_id, del_flag, create_time, 
-      update_time)
-    values (#{id,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{fName,jdbcType=VARCHAR}, 
-      #{type,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{addUserId,jdbcType=INTEGER}, 
-      #{updUserId,jdbcType=INTEGER}, #{delFlag,jdbcType=SMALLINT}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.codeshare.permission.product.po.ProductAttr">
+    insert into t_product_attr (id, product_id, attr_info, 
+      add_user_id, upd_user_id, del_flag, 
+      create_time, update_time)
+    values (#{id,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{attrInfo,jdbcType=VARCHAR}, 
+      #{addUserId,jdbcType=INTEGER}, #{updUserId,jdbcType=INTEGER}, #{delFlag,jdbcType=SMALLINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.codeshare.permission.product.po.ProductFile">
-    insert into t_product_file
+  <insert id="insertSelective" parameterType="com.codeshare.permission.product.po.ProductAttr">
+    insert into t_product_attr
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -46,14 +41,8 @@
       <if test="productId != null">
         product_id,
       </if>
-      <if test="fName != null">
-        f_name,
-      </if>
-      <if test="type != null">
-        type,
-      </if>
-      <if test="url != null">
-        url,
+      <if test="attrInfo != null">
+        attr_info,
       </if>
       <if test="addUserId != null">
         add_user_id,
@@ -78,14 +67,8 @@
       <if test="productId != null">
         #{productId,jdbcType=BIGINT},
       </if>
-      <if test="fName != null">
-        #{fName,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null">
-        #{type,jdbcType=INTEGER},
-      </if>
-      <if test="url != null">
-        #{url,jdbcType=VARCHAR},
+      <if test="attrInfo != null">
+        #{attrInfo,jdbcType=VARCHAR},
       </if>
       <if test="addUserId != null">
         #{addUserId,jdbcType=INTEGER},
@@ -104,20 +87,14 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.codeshare.permission.product.po.ProductFile">
-    update t_product_file
+  <update id="updateByPrimaryKeySelective" parameterType="com.codeshare.permission.product.po.ProductAttr">
+    update t_product_attr
     <set>
       <if test="productId != null">
         product_id = #{productId,jdbcType=BIGINT},
       </if>
-      <if test="fName != null">
-        f_name = #{fName,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null">
-        type = #{type,jdbcType=INTEGER},
-      </if>
-      <if test="url != null">
-        url = #{url,jdbcType=VARCHAR},
+      <if test="attrInfo != null">
+        attr_info = #{attrInfo,jdbcType=VARCHAR},
       </if>
       <if test="addUserId != null">
         add_user_id = #{addUserId,jdbcType=INTEGER},
@@ -137,12 +114,10 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.codeshare.permission.product.po.ProductFile">
-    update t_product_file
+  <update id="updateByPrimaryKey" parameterType="com.codeshare.permission.product.po.ProductAttr">
+    update t_product_attr
     set product_id = #{productId,jdbcType=BIGINT},
-      f_name = #{fName,jdbcType=VARCHAR},
-      type = #{type,jdbcType=INTEGER},
-      url = #{url,jdbcType=VARCHAR},
+      attr_info = #{attrInfo,jdbcType=VARCHAR},
       add_user_id = #{addUserId,jdbcType=INTEGER},
       upd_user_id = #{updUserId,jdbcType=INTEGER},
       del_flag = #{delFlag,jdbcType=SMALLINT},

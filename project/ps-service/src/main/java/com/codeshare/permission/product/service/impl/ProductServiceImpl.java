@@ -2,15 +2,15 @@ package com.codeshare.permission.product.service.impl;
 
 import com.codeshare.common.CodeHelperUtil;
 import com.codeshare.common.ModelMapperUtil;
+import com.codeshare.permission.product.dao.IProductAttrDao;
 import com.codeshare.permission.product.dao.IProductDao;
-import com.codeshare.permission.product.dao.IProductDetailDao;
 import com.codeshare.permission.product.dao.IProductFileDao;
 import com.codeshare.permission.product.dao.IProductPriceDao;
 import com.codeshare.permission.product.po.Product;
-import com.codeshare.permission.product.po.ProductDetail;
+import com.codeshare.permission.product.po.ProductAttr;
 import com.codeshare.permission.product.po.ProductFile;
 import com.codeshare.permission.product.po.ProductPrice;
-import com.codeshare.permission.product.req.ProductDetailReq;
+import com.codeshare.permission.product.req.ProductAttrReq;
 import com.codeshare.permission.product.req.ProductReq;
 import com.codeshare.permission.product.service.IProductService;
 import com.google.common.collect.Lists;
@@ -40,49 +40,49 @@ public class ProductServiceImpl implements IProductService {
     private IProductFileDao fileDao;
 
     @Resource
-    private IProductDetailDao detailDao;
+    private IProductAttrDao attrDao;
 
     @Override
     public void saveProduct(ProductReq req) {
-        Integer productId = saveCommonInfo(req);
+        Long productId = saveCommonInfo(req);
         saveProductPrice(req, productId);
         saveProductFiles(req, productId);
         saveProductDetail(req, productId);
     }
 
-    private void saveProductDetail(ProductReq req, Integer productId) {
-        List<ProductDetail> productDetails = queryProductDetails(productId);
-        ProductDetail productDetail = buildProductDetail(req, productId);
+    private void saveProductDetail(ProductReq req, Long productId) {
+        List<ProductAttr> productDetails = queryProductDetails(productId);
+        ProductAttr productDetail = buildProductAttr(req, productId);
         if (CodeHelperUtil.isNotEmpty(productDetails)){
-            updProductDetail(productDetail);
+            updProductAttr(productDetail);
         }
         else{
             addProductDetail(productDetail);
         }
     }
 
-    private void updProductDetail(ProductDetail productDetail) {
-        detailDao.updateByPrimaryKeyWithBLOBs(productDetail);
+    private void updProductAttr(ProductAttr productAttr) {
+        attrDao.updateByPrimaryKeySelective(productAttr);
     }
 
-    private void addProductDetail(ProductDetail productDetail) {
-        detailDao.insertSelective(productDetail);
+    private void addProductDetail(ProductAttr productAttr) {
+        attrDao.insertSelective(productAttr);
     }
 
-    private List<ProductDetail> queryProductDetails(Integer productId) {
-        ProductDetailReq detailReq = new ProductDetailReq();
+    private List<ProductAttr> queryProductDetails(Long productId) {
+        ProductAttrReq detailReq = new ProductAttrReq();
         detailReq.setProductId(productId);
-        return detailDao.queryList(detailReq);
+        return attrDao.queryList(detailReq);
     }
 
-    private ProductDetail buildProductDetail(ProductReq req, Integer productId) {
-        ProductDetail productDetail = new ProductDetail();
-        productDetail.setProductId(productId);
-        productDetail.setContent(req.getProductContent());
-        return productDetail;
+    private ProductAttr buildProductAttr(ProductReq req, Long productId) {
+        ProductAttr productAttr = new ProductAttr();
+        productAttr.setProductId(productId);
+        productAttr.setAttrInfo(req.getProductContent());
+        return productAttr;
     }
 
-    private void saveProductPrice(ProductReq req, Integer productId) {
+    private void saveProductPrice(ProductReq req, Long productId) {
         ProductPrice productPrice = ModelMapperUtil.strictMap(req,ProductPrice.class);
         productPrice.setProductId(productId);
         productPrice.setPurchasePrice(req.getPurchasePrice());
@@ -95,7 +95,7 @@ public class ProductServiceImpl implements IProductService {
      * @param req
      * @param productId
      */
-    private void saveProductFiles(ProductReq req, Integer productId) {
+    private void saveProductFiles(ProductReq req, Long productId) {
         List<ProductFile> productFiles = buildProductFiles(req, productId);
         addProductFile(productFiles);
     }
@@ -106,7 +106,7 @@ public class ProductServiceImpl implements IProductService {
         }
     }
 
-    private List<ProductFile> buildProductFiles(ProductReq req, Integer productId) {
+    private List<ProductFile> buildProductFiles(ProductReq req, Long productId) {
         List<ProductFile> productFiles = Lists.newArrayList();
         if (CodeHelperUtil.isNotEmpty(req.getHeadImage())){
             ProductFile file = new ProductFile();
@@ -135,7 +135,7 @@ public class ProductServiceImpl implements IProductService {
      * @param req
      * @return
      */
-    private Integer saveCommonInfo(ProductReq req) {
+    private Long saveCommonInfo(ProductReq req) {
         Product product = ModelMapperUtil.strictMap(req,Product.class);
         if (CodeHelperUtil.isPositive(req.getId())){
             updCommonInfo(product);
