@@ -10,7 +10,7 @@ import com.codeshare.permission.product.po.Product;
 import com.codeshare.permission.product.po.ProductAttr;
 import com.codeshare.permission.product.po.ProductFile;
 import com.codeshare.permission.product.po.ProductPrice;
-import com.codeshare.permission.product.req.ProductAttrReq;
+import com.codeshare.permission.product.req.ProductAttrQueryReq;
 import com.codeshare.permission.product.req.ProductReq;
 import com.codeshare.permission.product.service.IProductService;
 import com.google.common.collect.Lists;
@@ -47,17 +47,18 @@ public class ProductServiceImpl implements IProductService {
         Long productId = saveCommonInfo(req);
         saveProductPrice(req, productId);
         saveProductFiles(req, productId);
-        saveProductDetail(req, productId);
+        saveProductAttr(req, productId);
     }
 
-    private void saveProductDetail(ProductReq req, Long productId) {
-        List<ProductAttr> productDetails = queryProductDetails(productId);
-        ProductAttr productDetail = buildProductAttr(req, productId);
-        if (CodeHelperUtil.isNotEmpty(productDetails)){
-            updProductAttr(productDetail);
+    private void saveProductAttr(ProductReq req, Long productId) {
+        ProductAttr productAttrReq = buildProductAttr(req, productId);
+
+        ProductAttr productAttr = queryProductAttr(productId);
+        if (CodeHelperUtil.isNotEmpty(productAttr)){
+            updProductAttr(productAttrReq);
         }
         else{
-            addProductDetail(productDetail);
+            addProductAttr(productAttrReq);
         }
     }
 
@@ -65,14 +66,14 @@ public class ProductServiceImpl implements IProductService {
         attrDao.updateByPrimaryKeySelective(productAttr);
     }
 
-    private void addProductDetail(ProductAttr productAttr) {
+    private void addProductAttr(ProductAttr productAttr) {
         attrDao.insertSelective(productAttr);
     }
 
-    private List<ProductAttr> queryProductDetails(Long productId) {
-        ProductAttrReq detailReq = new ProductAttrReq();
-        detailReq.setProductId(productId);
-        return attrDao.queryList(detailReq);
+    private ProductAttr queryProductAttr(Long productId) {
+        ProductAttrQueryReq queryReq = new ProductAttrQueryReq();
+        queryReq.setProductId(productId);
+        return attrDao.querySingle(queryReq);
     }
 
     private ProductAttr buildProductAttr(ProductReq req, Long productId) {

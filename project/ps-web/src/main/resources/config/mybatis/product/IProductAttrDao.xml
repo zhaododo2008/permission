@@ -20,6 +20,22 @@
     from t_product_attr
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="querySingle" resultMap="BaseResultMap" parameterType="com.codeshare.permission.product.req.ProductAttrQueryReq">
+    select
+    <include refid="Base_Column_List" />
+    from t_product_attr
+    <include refid="page_condition"/>
+    limit 0,1
+  </select>
+
+  <sql id="page_condition">
+    <trim prefix="where" prefixOverrides="and | or">
+      <if test="req.productId != null">
+        and product_id = #{req.productId,jdbcType=BIGINT}
+      </if>
+    </trim>
+  </sql>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_product_attr
     where id = #{id,jdbcType=BIGINT}

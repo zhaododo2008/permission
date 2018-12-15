@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @author zhaododo
  **/
 
-public class ProductAttrReq implements Serializable {
+public class ProductAttrQueryReq implements Serializable {
 
     /**
      * 商品Id
