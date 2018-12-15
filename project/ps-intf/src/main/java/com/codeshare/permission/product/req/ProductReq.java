@@ -1,14 +1,12 @@
 package com.codeshare.permission.product.req;
 
-import io.swagger.annotations.ApiModelProperty;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 /**
- * Created by zhaojun on 2018/7/6.
+ * @author zhaododo
  **/
 
 public class ProductReq implements Serializable {
@@ -16,7 +14,7 @@ public class ProductReq implements Serializable {
     /**
      * 主键
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 商品名称
@@ -120,12 +118,11 @@ public class ProductReq implements Serializable {
      */
     private Date lastShelfTime;
 
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

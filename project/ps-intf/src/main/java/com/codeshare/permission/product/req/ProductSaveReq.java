@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * Created by zhaojun on 2018/7/6.
+ * @author zhaododo
  **/
 
 public class ProductSaveReq implements Serializable {
@@ -15,7 +15,7 @@ public class ProductSaveReq implements Serializable {
      * 商品id
      */
     @ApiModelProperty(value = "商品id")
-    private Integer productId;
+    private Long productId;
 
     /**
      * 商品名称
@@ -113,11 +113,11 @@ public class ProductSaveReq implements Serializable {
     @ApiModelProperty(value = "添加人")
     private Integer addUserId;
 
-    public Integer getProductId() {
+    public Long getProductId() {
         return productId;
     }
 
-    public void setProductId(Integer productId) {
+    public void setProductId(Long productId) {
         this.productId = productId;
     }
 
