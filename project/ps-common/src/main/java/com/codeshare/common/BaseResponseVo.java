@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
  **/
 
 @ApiModel(description = "基础Vo")
-public class ResponseVo<T> {
+public class BaseResponseVo<T> {
 
     @ApiModelProperty(value = "数据")
     private T data;

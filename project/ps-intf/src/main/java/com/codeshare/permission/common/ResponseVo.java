@@ -1,5 +1,6 @@
 package com.codeshare.permission.common;
 
+import com.codeshare.common.BaseResponseVo;
 import com.codeshare.common.ValidationResult;
 import com.codeshare.permission.common.exception.BusinessException;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -8,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * @author cjbi
  */
-public class ResponseVo<T> extends com.codeshare.common.ResponseVo<T> {
+public class ResponseVo<T> extends BaseResponseVo<T> {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @ApiModelProperty(hidden = true)
