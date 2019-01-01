@@ -8,6 +8,7 @@ import com.codeshare.permission.category.req.CategoryQueryParamVo;
 import com.codeshare.permission.category.req.CategoryQueryReq;
 import com.codeshare.permission.category.resp.CategoryNode;
 import com.codeshare.permission.category.resp.CategoryTreeNode;
+import com.codeshare.permission.category.resp.ElCategoryNode;
 import com.codeshare.permission.category.service.ICategoryQueryService;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,40 @@ public class CategoryQueryServiceImpl implements ICategoryQueryService {
         return rootTreeNode;
     }
 
+    @Override
+    public List<ElCategoryNode> queryElNodeTree(CategoryQueryParamVo queryParamVo) {
+
+        CategoryTreeNode rootTreeNode = queryLeafNodes(queryParamVo);
+
+        ElCategoryNode rootElNode = createElCategoryNode(rootTreeNode);
+
+        buildElCategoryNode(rootTreeNode,rootElNode);
+
+        return rootElNode.getChildren();
+
+    }
+
+    private void buildElCategoryNode(CategoryTreeNode rootTreeNode,ElCategoryNode rootElNode) {
+        if (CodeHelperUtil.isNotEmpty(rootTreeNode)){
+
+            if (CodeHelperUtil.isNotEmpty(rootTreeNode.getChildren())){
+                for (CategoryTreeNode child:rootTreeNode.getChildren()) {
+                    ElCategoryNode childElNode = createElCategoryNode(child);
+                    rootElNode.getChildren().add(childElNode);
+                    buildElCategoryNode(child,childElNode);
+
+                }
+            }
+        }
+    }
+
+    private ElCategoryNode createElCategoryNode(CategoryTreeNode treeNode) {
+        ElCategoryNode elCategoryNode = new ElCategoryNode();
+        elCategoryNode.setLabel(treeNode.getCategoryNode().getName());
+        elCategoryNode.setValue(treeNode.getCategoryNode().getId());
+        return elCategoryNode;
+    }
+
     private CategoryTreeNode buildRootTreeNode(List<Category> rootCategoryList) {
         CategoryTreeNode categoryTreeNode = new CategoryTreeNode();
         if (CodeHelperUtil.isNotEmpty(rootCategoryList)){
@@ -54,6 +89,7 @@ public class CategoryQueryServiceImpl implements ICategoryQueryService {
     public List<Category> queryList(CategoryQueryReq queryReq) {
         return categoryDao.queryList(queryReq);
     }
+
 
     private void buildCategoryTree(CategoryTreeNode root, List<Category> categoryList) {
 
@@ -84,7 +120,7 @@ public class CategoryQueryServiceImpl implements ICategoryQueryService {
         CategoryNode categoryNode = new CategoryNode();
         categoryNode.setLevel(0);
         categoryNode.setId(1);
-        categoryNode.setName(null);
+        categoryNode.setName("根节点");
         categoryNode.setParentId(0);
         return categoryNode;
     }

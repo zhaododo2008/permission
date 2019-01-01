@@ -2,6 +2,7 @@ package com.codeshare.permission.controller;
 
 import com.codeshare.permission.category.req.CategoryQueryParamVo;
 import com.codeshare.permission.category.resp.CategoryTreeNode;
+import com.codeshare.permission.category.resp.ElCategoryNode;
 import com.codeshare.permission.category.service.ICategoryQueryService;
 import com.codeshare.permission.common.ResponseVo;
 import io.swagger.annotations.Api;
@@ -26,9 +27,16 @@ public class CategoryController {
 
     @Resource
     private ICategoryQueryService categoryQueryService;
-    @ApiOperation("查询角色列表")
+    @ApiOperation("查询类目列表")
     @RequestMapping(value = "/queryCategoryList", method = RequestMethod.POST)
-    public ResponseVo<CategoryTreeNode> queryRoles(@RequestBody CategoryQueryParamVo queryParamVo) {
+    public ResponseVo<CategoryTreeNode> queryCategoryList(@RequestBody CategoryQueryParamVo queryParamVo) {
         return ResponseVo.success(categoryQueryService.queryLeafNodes(queryParamVo));
+    }
+
+
+    @ApiOperation("查询El类目列表")
+    @RequestMapping(value = "/queryElCategoryList", method = RequestMethod.POST)
+    public ResponseVo<ElCategoryNode> queryElCategoryList(@RequestBody CategoryQueryParamVo queryParamVo) {
+        return ResponseVo.success(categoryQueryService.queryElNodeTree(queryParamVo));
     }
 }
