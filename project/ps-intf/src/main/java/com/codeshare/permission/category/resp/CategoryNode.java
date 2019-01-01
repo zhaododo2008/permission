@@ -26,10 +26,6 @@ public class CategoryNode {
      */
     private Integer level;
 
-    /**
-     * 数据状态 0-正常,1-删除
-     */
-    private Integer delFlag;
 
     public Integer getId() {
         return id;
@@ -63,11 +59,4 @@ public class CategoryNode {
         this.level = level;
     }
 
-    public Integer getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(Integer delFlag) {
-        this.delFlag = delFlag;
-    }
 }
