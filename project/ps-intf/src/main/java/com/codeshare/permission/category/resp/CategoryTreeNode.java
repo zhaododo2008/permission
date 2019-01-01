@@ -1,21 +1,29 @@
 package com.codeshare.permission.category.resp;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by zhaojun on 2018/12/30.
+ *
+ * @author zhaojun
+ * @date 2018/12/30
  **/
 
 public class CategoryTreeNode {
 
+    public CategoryTreeNode(){
+        categoryNode = new CategoryNode();
+        children = new LinkedList<>();
+    }
+
     /**
-     *
+     * 节点
      */
     private CategoryNode categoryNode;
 
 
     /**
-     * 子节点
+     * 子树
      */
     private List<CategoryTreeNode> children;
 

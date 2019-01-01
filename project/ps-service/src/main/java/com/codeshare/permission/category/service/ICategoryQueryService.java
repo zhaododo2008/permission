@@ -8,7 +8,9 @@ import com.codeshare.permission.category.resp.CategoryTreeNode;
 import java.util.List;
 
 /**
- * Created by zhaojun on 2018/12/30.
+ *
+ * @author zhaojun
+ * @date 2018/12/30
  **/
 
 public interface ICategoryQueryService {

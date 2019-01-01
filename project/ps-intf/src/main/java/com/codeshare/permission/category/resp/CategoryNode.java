@@ -1,7 +1,9 @@
 package com.codeshare.permission.category.resp;
 
 /**
- * Created by zhaojun on 2018/12/30.
+ *
+ * @author zhaojun
+ * @date 2018/12/30
  **/
 
 public class CategoryNode {
