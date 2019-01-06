@@ -4,6 +4,7 @@ import com.codeshare.permission.category.po.Category;
 import com.codeshare.permission.category.req.CategoryQueryParamVo;
 import com.codeshare.permission.category.req.CategoryQueryReq;
 import com.codeshare.permission.category.resp.CategoryTreeNode;
+import com.codeshare.permission.category.resp.ElCategoryNode;
 
 import java.util.List;
 
@@ -22,6 +23,14 @@ public interface ICategoryQueryService {
      * @return
      */
     CategoryTreeNode queryLeafNodes(CategoryQueryParamVo queryParamVo);
+
+
+    /**
+     * 查询element-ui类目树
+     * @param queryParamVo
+     * @return
+     */
+    List<ElCategoryNode> queryElNodeTree(CategoryQueryParamVo queryParamVo);
 
 
     /**

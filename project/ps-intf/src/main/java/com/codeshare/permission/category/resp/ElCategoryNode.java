@@ -1,6 +1,5 @@
 package com.codeshare.permission.category.resp;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -12,7 +11,6 @@ import java.util.List;
 public class ElCategoryNode {
 
     public ElCategoryNode(){
-        children = new LinkedList<>();
     }
 
     /**

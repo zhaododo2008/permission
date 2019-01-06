@@ -10,6 +10,7 @@ import com.codeshare.permission.category.resp.CategoryNode;
 import com.codeshare.permission.category.resp.CategoryTreeNode;
 import com.codeshare.permission.category.resp.ElCategoryNode;
 import com.codeshare.permission.category.service.ICategoryQueryService;
+import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -54,9 +55,14 @@ public class CategoryQueryServiceImpl implements ICategoryQueryService {
         if (CodeHelperUtil.isNotEmpty(rootTreeNode)){
 
             if (CodeHelperUtil.isNotEmpty(rootTreeNode.getChildren())){
+
                 for (CategoryTreeNode child:rootTreeNode.getChildren()) {
-                    ElCategoryNode childElNode = createElCategoryNode(child);
-                    rootElNode.getChildren().add(childElNode);
+
+                    ElCategoryNode childElNode = buildChildElNode(child);
+
+                    if (null != rootElNode.getChildren()){
+                        rootElNode.getChildren().add(childElNode);
+                    }
                     buildElCategoryNode(child,childElNode);
 
                 }
@@ -64,7 +70,26 @@ public class CategoryQueryServiceImpl implements ICategoryQueryService {
         }
     }
 
+    private ElCategoryNode buildChildElNode(CategoryTreeNode child) {
+        ElCategoryNode childElNode;
+        if (CodeHelperUtil.isNotEmpty(child.getChildren())){
+            childElNode = createElCategoryNode(child);
+        }
+        else{
+            childElNode = createElLeafNode(child);
+        }
+        return childElNode;
+    }
+
     private ElCategoryNode createElCategoryNode(CategoryTreeNode treeNode) {
+        ElCategoryNode elCategoryNode = new ElCategoryNode();
+        elCategoryNode.setLabel(treeNode.getCategoryNode().getName());
+        elCategoryNode.setValue(treeNode.getCategoryNode().getId());
+        elCategoryNode.setChildren(Lists.newLinkedList());
+        return elCategoryNode;
+    }
+
+    private ElCategoryNode createElLeafNode(CategoryTreeNode treeNode) {
         ElCategoryNode elCategoryNode = new ElCategoryNode();
         elCategoryNode.setLabel(treeNode.getCategoryNode().getName());
         elCategoryNode.setValue(treeNode.getCategoryNode().getId());
